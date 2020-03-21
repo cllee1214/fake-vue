@@ -5,6 +5,12 @@ var vm = new Vue({
   data: {
     message: 'Hello Vue!'
   },
+  methods: {
+    say: function() {
+      console.log(1111)
+      console.log(this)
+    }
+  },
   beforeCreate () {
       console.log('beforecreate!')
   }
@@ -13,3 +19,4 @@ var vm = new Vue({
 
 console.log(vm)
 vm.message ='dfdfdf'
+vm.say()

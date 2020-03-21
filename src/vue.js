@@ -1,13 +1,16 @@
 
-import { initData } from './init.js'
+import  init from './init/index.js'
 
 function Vue (options) {
-    var vm = this
-    console.log(options)
-    vm.$options = options
-
-    initData(vm)
-
+    this._init(options)
 }
+
+
+function initMixin(Vue) {
+    Vue.prototype._init = init
+}
+
+initMixin(Vue)
+
 
 export default Vue

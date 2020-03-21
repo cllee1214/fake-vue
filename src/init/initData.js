@@ -40,4 +40,4 @@ function initData (vm) {
 
 
 
-export { initData }
+export  default initData
