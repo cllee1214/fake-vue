@@ -29,8 +29,9 @@ function parse (html) {
         }
     }
 
-
+    //解析 <div id='app'>，分为三个步骤：
     function parseStartTag() {
+        //1.解析 <div
         var start = html.match(startTagOpen)
         if(start){
             var match = {
@@ -41,14 +42,16 @@ function parse (html) {
         }
         advance(start[0].length)
 
+        //2. 解析 id='app'，实际情况是不只有id这个属性，可能有很多，因此有个while循环。
+        // 这里的逻辑是 一直要遇到 > 或者 />才结束。即整个startTag结束。
         var end, attr;
-        
         while(!(end = html.match(stargTagClose)) && (attr = html.match(attribute))){
             attr.start = index
             advance(attr[0].length)
             attr.end = index
             match.attrs.push(attr)
         }
+        // 解析 >， 也可能是 />。这里是>
         if(end){
             console.log(end)
             match.unarySlash = end[1]
