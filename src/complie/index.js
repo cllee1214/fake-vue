@@ -1,4 +1,4 @@
-import {startTagOpen, stargTagClose} from './reg.js'
+import {startTagOpen, stargTagClose, attribute} from './reg.js'
 
 function parse (html) {
     console.log(html)
@@ -20,6 +20,7 @@ function parse (html) {
                 //4. 元素节点，如<div></div>,其中又包含两种情况，
                 //可能是前半部分<div>,也可能是后半部份</div>
                 var startTagMatch = parseStartTag()
+                html = ''
 
                 //5.文本节点，其中就包含{{message}}这种的
 
@@ -39,9 +40,23 @@ function parse (html) {
             }
         }
         advance(start[0].length)
+
+        var end, attr;
         
-        var end = html.match(stargTagClose)
-        html = ''
+        while(!(end = html.match(stargTagClose)) && (attr = html.match(attribute))){
+            attr.start = index
+            advance(attr[0].length)
+            attr.end = index
+            match.attrs.push(attr)
+        }
+        if(end){
+            console.log(end)
+            match.unarySlash = end[1]
+            advance(end[0].length)
+            match.end = index
+            return match
+        }
+        
     }
 
     function advance (n) {

@@ -2,6 +2,7 @@
 var startTagOpen = /^<([a-zA-Z][\-\.a-zA-Z0-9]*)/
 
 // 匹配 >  有无^区别巨大
+// 这里捕获 斜杠 的原因是有可能是 <img /> <br/> 标签这种，而一般的，如div，是成对出现的
 var stargTagClose = /^\s*(\/?)>/
 
 // 这里直接抄自源码
