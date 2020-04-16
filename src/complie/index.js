@@ -1,6 +1,6 @@
-import {startTagOpen, startTagClose, attribute, endTag} from './reg.js'
+import {startTagOpen, startTagClose, attribute, dynamicArgAttribute, endTag} from './reg.js'
 
-function parse (html) {
+function parseHtml (html) {
     console.log(html)
     var stack = []
     var index = 0
@@ -69,7 +69,8 @@ function parse (html) {
             //2. 解析 id='app'，实际情况是不只有id这个属性，可能有很多，因此有个while循环。
             // 这里的逻辑是 一直要遇到 > 或者 />才结束。即整个startTag结束。
             var end, attr;
-            while(!(end = html.match(startTagClose)) && (attr = html.match(attribute))){
+            while(!(end = html.match(startTagClose)) && (attr = html.match(attribute) || html.match(dynamicArgAttribute))){
+                console.log(attr)
                 attr.start = index
                 advance(attr[0].length)
                 attr.end = index
@@ -99,4 +100,4 @@ function isPlainTextElement() {
 
 
 
-export default parse
+export default parseHtml

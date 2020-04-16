@@ -15,11 +15,26 @@ var startTagClose = /^\s*(\/?)>/
 */
 var attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/;
 
+
+/*
+动态属性匹配
+分支条件分别对应几种情况：
+v-[\w-]匹配 v-on v-bind v-xxx 这种的
+@匹配 v-on的简写
+:匹配 v-bind简写
+\[[^=]+\][^\s"'<>\/=]* 匹配动态事件，如@[event]或者v-on:[event]这种写法。这里对应[event],见文档 https://cn.vuejs.org/v2/api/#v-on
+\s*(=)\s* 匹配 等号，兼容前后空格
+剩下的匹配事件监听的函数名字。兼容双引号和单引号以及不写单双引号的情况
+*/
+var dynamicArgAttribute = /^\s*((?:v-[\w-]+:|@|:|#)\[[^=]+\][^\s"'<>\/=]*)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/;
+
+
 var endTag = /^<\/[a-zA-Z][\-\.a-zA-Z0-9]*>/
 
 export {
     startTagOpen,
     startTagClose,
     attribute,
+    dynamicArgAttribute,
     endTag
 }
