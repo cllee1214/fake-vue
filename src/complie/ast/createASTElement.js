@@ -9,6 +9,7 @@ function makeAttrsMap (attrs) {
     return map
 }
 
+//定义AST基本结构
 function createASTElement (tag, attrs, parent) {
     return {
         type: 1,

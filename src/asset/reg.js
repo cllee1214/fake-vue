@@ -31,10 +31,44 @@ var dynamicArgAttribute = /^\s*((?:v-[\w-]+:|@|:|#)\[[^=]+\][^\s"'<>\/=]*)(?:\s*
 
 var endTag = /^<\/[a-zA-Z][\-\.a-zA-Z0-9]*>/
 
+/*解析v-for的值
+根据官方文档，这里有好几种写法：
+1）item in items
+2) (item, index) in items,带索引的
+3）(val, key) in object,带key
+4) (val, name, index) in object,带别名
+
+v-for的值分为三部分，抽象出来就是 (part1) (of或者in) (part2) 三部分
+对应的，正则表达式也是三部分
+
+第一部分，([\s\S]*?),一正一反，匹配任意字符，且尽量少匹配。
+又根据文档，第一部分就是 item或(item, index)或者(val, key)或者(val, name, index)
+第二部分，(?:in|of) 对应中间部分，且不捕获
+第三部分，同样的匹配0个或者多个字符
+
+三个部分中间的空格由\s+匹配
+*/
+var forAliasRE = /([\s\S]*?)\s+(?:in|of)\s+([\s\S]*)/
+
+//结合上面v-for解析注释
+//第一部分中有三种写法带括号，此正则表达式的作用在于去除两边的括号。（stripParens直译剥皮有点形象）
+//具体实现为全局查找，将括号替换为空
+var stripParensRE = /^\(|\)$/g
+
+//再结合上面去除括号后的结果，第一部分就被处理成了这样的： item, index
+//此正则的目的是把 ,index 或者 ,name解析出来
+// [^,\}\]]* 为除开这几种特殊符号都匹配，且以逗号开头，实际上是匹配是 ,index这样的。这里重复了两次，且后面一次带了问号，
+//即可能不存在，原因是实际情况可能开头文档里面的第二三种写法，也可能为第四种写法。
+var forIteratorRE = /,([^,\}\]]*)(?:,([^,\}\]]*))?$/
+
 export {
     startTagOpen,
     startTagClose,
     attribute,
     dynamicArgAttribute,
-    endTag
+    endTag,
+
+    forAliasRE,
+    stripParensRE,
+    forIteratorRE
 }
