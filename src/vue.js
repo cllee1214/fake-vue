@@ -1,13 +1,13 @@
 
 import  init from './init/index.js'
-import parse from './complie/index'
+import parseHtml from './complie/parse/index'
 
 function Vue (options) {
     this._init(options)
 
     var ele = document.querySelector(options.el)
     var template = ele.outerHTML
-    parse(template)
+    parseHtml(template)
 }
 
 

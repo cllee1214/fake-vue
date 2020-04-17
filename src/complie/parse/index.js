@@ -1,4 +1,6 @@
-import {startTagOpen, startTagClose, attribute, dynamicArgAttribute, endTag} from './reg.js'
+import {startTagOpen, startTagClose, attribute, dynamicArgAttribute, endTag} from '../../asset/reg.js'
+import {isPlainTextElement, isUnaryTag} from '../../asset/is.js'
+import {start} from '../ast/ast.js'
 
 function parseHtml (html) {
     console.log(html)
@@ -22,13 +24,14 @@ function parseHtml (html) {
 
                 var endTagMatch = html.match(endTag)
                 if(endTagMatch){
-                    console.log(endTagMatch)
+                    //console.log(endTagMatch)
                     advance(endTagMatch[0].length)
                     continue
                 }
 
                 var startTagMatch = parseStartTag()
                 if(startTagMatch){
+                    handleStartTag(startTagMatch)
                     continue
                 }
                 
@@ -70,7 +73,6 @@ function parseHtml (html) {
             // 这里的逻辑是 一直要遇到 > 或者 />才结束。即整个startTag结束。
             var end, attr;
             while(!(end = html.match(startTagClose)) && (attr = html.match(attribute) || html.match(dynamicArgAttribute))){
-                console.log(attr)
                 attr.start = index
                 advance(attr[0].length)
                 attr.end = index
@@ -87,15 +89,32 @@ function parseHtml (html) {
         }
     }
 
+    function handleStartTag(match) {
+        console.log(match)
+        var len = match.attrs.length
+        var attrs = new Array(len)
+        var unary = isUnaryTag(match.unarySlash) || !!match.unarySlash
+
+        for(var i = 0; i < len; i++ ){
+            attrs[i] = {
+                name: match.attrs[i][1],
+                value: match.attrs[i][3],
+                start: match.attrs[i].start + match.attrs[i][0].match(/^\s*/).length,
+                end: match.attrs[i].end
+            }
+        }
+
+        // todo
+        //入stack 
+
+        start(match.tagName, attrs, unary, match.start, match.end)
+
+    }
+
     function advance (n) {
         index += n;
         html = html.substring(n);
       }
-}
-
-
-function isPlainTextElement() {
-    return false
 }
 
 
