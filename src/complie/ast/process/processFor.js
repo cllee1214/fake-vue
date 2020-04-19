@@ -6,7 +6,8 @@ function processFor(element) {
     console.log('processFor')
     var exp = getAttr(element, 'v-for')
     if(exp){
-        parseFor(exp)
+        var res = parseFor(exp)
+        
     }
 
 }
