@@ -1,21 +1,19 @@
 import {forAliasRE, stripParensRE,forIteratorRE} from '../../../asset/reg'
+import getAttr from './getAttr'
+import extend from '../../../asset/extend'
 
 //处理v-for
 function processFor(element) {
-    var exp;
     console.log('processFor')
     var exp = getAttr(element, 'v-for')
     if(exp){
         var res = parseFor(exp)
-        
+        //把解析v-for的结果合并到AST上
+        extend(element, res)
+        console.log(extend)
     }
 
 }
-
-function getAttr(element, name) {
-    return element.attrsMap[name]
-}
-
 
 /*解析 v-for的值
 根据官方文档，这里有好几种写法：

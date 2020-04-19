@@ -1,5 +1,5 @@
 import createASTElement from './createASTElement'
-import {processFor} from './process/index.js'
+import {processFor, processIf} from './process/index.js'
 
 //AST树父节点，根节点没有父节点，所以初始为空
 var currentParent;
@@ -14,6 +14,9 @@ function start(tag, attrs, unary, start, end) {
     console.log(element)
 
     processFor(element)
+    processIf(element)
+
+    // todo processOnce
     
 }
 

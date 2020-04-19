@@ -19,7 +19,7 @@ var attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'
 /*
 动态属性匹配
 分支条件分别对应几种情况：
-v-[\w-]匹配 v-on v-bind v-xxx 这种的
+v-[\w-]匹配 v-on v-bind v-if v-xxx 这种的
 @匹配 v-on的简写
 :匹配 v-bind简写
 \[[^=]+\][^\s"'<>\/=]* 匹配动态事件，如@[event]或者v-on:[event]这种写法。这里对应[event],见文档 https://cn.vuejs.org/v2/api/#v-on

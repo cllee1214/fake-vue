@@ -1,7 +1,7 @@
 import processFor from './processFor.js'
-
-console.log(processFor)
+import processIf from './processIf.js'
 
 export {
-    processFor
+    processFor,
+    processIf
 }

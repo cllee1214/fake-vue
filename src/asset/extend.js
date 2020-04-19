@@ -5,3 +5,5 @@ function extend (to, from) {
     }
     return to
 }
+
+export default extend
