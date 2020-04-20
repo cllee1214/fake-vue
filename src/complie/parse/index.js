@@ -1,6 +1,6 @@
 import {startTagOpen, startTagClose, attribute, dynamicArgAttribute, endTag} from '../../asset/reg.js'
 import {isPlainTextElement, isUnaryTag} from '../../asset/is.js'
-import {start} from '../ast/ast.js'
+import {start, chars} from '../ast/ast.js'
 
 function parseHtml (html) {
     console.log(html)
@@ -52,6 +52,7 @@ function parseHtml (html) {
             }
             if(text){
                 advance(text.length)
+                chars(text, index - text.length ,index)
             }
         }
     }

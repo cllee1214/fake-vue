@@ -61,6 +61,9 @@ var stripParensRE = /^\(|\)$/g
 //即可能不存在，原因是实际情况可能开头文档里面的第二三种写法，也可能为第四种写法。
 var forIteratorRE = /,([^,\}\]]*)(?:,([^,\}\]]*))?$/
 
+//解析纯文本 {{xxxx}}这样的
+var defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g
+
 export {
     startTagOpen,
     startTagClose,
@@ -70,5 +73,7 @@ export {
 
     forAliasRE,
     stripParensRE,
-    forIteratorRE
+    forIteratorRE,
+
+    defaultTagRE
 }
