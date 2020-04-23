@@ -1,11 +1,14 @@
 import createASTElement from './createASTElement'
-import {processFor, processIf,parseText} from './process/index.js'
+import {processFor, processIf,parseText, processElement} from './process/index.js'
+import { startTagOpen } from '../../asset/reg';
 
-//AST树父节点，根节点没有父节点，所以初始为空
+var root;
 var currentParent;
+var stack = []
 
 function start(tag, attrs, unary, start, end) {
-    console.log(arguments)
+
+    //在每次初始化的时候就把上一次的元素作为父元素
     var element = createASTElement(tag, attrs, currentParent)
     
     element.attrList.forEach(function(attr){
@@ -17,6 +20,14 @@ function start(tag, attrs, unary, start, end) {
     processIf(element)
 
     // todo processOnce
+
+    if(!root){
+        root = element
+    }
+    if(!unary){
+        currentParent = element
+        stack.push(element)
+    }
     
 }
 
@@ -24,13 +35,46 @@ function start(tag, attrs, unary, start, end) {
 function chars (text, start, end) {
     if(text = text.trim()){
         console.log(text)
-        parseText(text)
+        var res = parseText(text)   
+        if(res){
+            currentParent.children.push({
+                type: 2,
+                expression: res.expression,
+                tokens: res.tokens,
+                text: text,
+                start,
+                end,
+            })
+        }else{
+            currentParent.children.push({
+                type: 3,
+                text: text
+            })
+        }
+        
     }
 }
 
 
+function end (tag, start, end) {
+    var element = stack.pop()
+    currentParent = stack[stack.length - 1]
+    closeElement(element)
+}
+
+function closeElement (element) {
+    element = processElement(element)
+
+    //如果stack为空了，说明已经是根元素了
+    if(stack.length){
+        currentParent.children.push(element)
+    }
+}
+
 
 export {
     start,
-    chars
+    chars,
+    end,
+    root
 }

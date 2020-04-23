@@ -1,10 +1,9 @@
 import {startTagOpen, startTagClose, attribute, dynamicArgAttribute, endTag} from '../../asset/reg.js'
 import {isPlainTextElement, isUnaryTag} from '../../asset/is.js'
-import {start, chars} from '../ast/ast.js'
+import {start, chars, end, root} from '../ast/ast.js' 
 
 function parseHtml (html) {
-    console.log(html)
-    var stack = []
+
     var index = 0
     var last, lastTag;
 
@@ -25,7 +24,9 @@ function parseHtml (html) {
                 var endTagMatch = html.match(endTag)
                 if(endTagMatch){
                     //console.log(endTagMatch)
+                    var matchEndStart = index
                     advance(endTagMatch[0].length)
+                    end(endTagMatch[1], matchEndStart, index)
                     continue
                 }
 
@@ -115,7 +116,11 @@ function parseHtml (html) {
     function advance (n) {
         index += n;
         html = html.substring(n);
-      }
+    }
+    
+    console.log('root')
+    console.log(root)
+    return root
 }
 
 

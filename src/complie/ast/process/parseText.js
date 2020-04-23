@@ -9,7 +9,7 @@ function parseText(text) {
         //index代表匹配到的表达式是从哪个位置开始的
         //lastIndex是前面匹配到表达式是在哪个位置结束的，初始为0
         //test方法会改变lastIndex  所以要重置为0， 否则下面的exec可能匹配不到
-        var match, index,tokenValue,rowTokens = [], tokens = [];
+        var match, index,tokenValue,rawTokens = [], tokens = [];
         var lastIndex = defaultTagRE.lastIndex = 0
 
         while(match = defaultTagRE.exec(text)){
@@ -22,7 +22,7 @@ function parseText(text) {
                 //1.文本开头到第一个表达式的最前面花括号所包含的纯文本（ msg is ）
                 //2. 两个表达式中间夹杂的纯文本（, age is ）
                 tokenValue = text.slice(lastIndex, index)
-                rowTokens.push(tokenValue)
+                rawTokens.push(tokenValue)
                 tokens.push(JSON.stringify(tokenValue))
             }
 
@@ -30,7 +30,7 @@ function parseText(text) {
             //处理双花括号中间的表达式
             var expression = match[1]
             tokens.push("_s(" + expression + ")")
-            rawTokens.push({ '@binding': exp });
+            rawTokens.push({ '@binding': expression });
             lastIndex = defaultTagRE.lastIndex   
         }
          
@@ -38,12 +38,12 @@ function parseText(text) {
         //也就是从这个lastIndex位置开始，一直到文本最后都是纯文本了，text.slice(lastIndex)得到剩下的纯文本 ( hahah)
         if(lastIndex < text.length){
             tokenValue = text.slice(lastIndex)
-            rowTokens.push(tokenValue)
+            rawTokens.push(tokenValue)
             tokens.push(JSON.stringify(tokenValue))
         }
         return {
             expression: tokens.join('+'),
-            tokens: rowTokens
+            tokens: rawTokens
         }
     }
 }

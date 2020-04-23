@@ -29,7 +29,7 @@ v-[\w-]匹配 v-on v-bind v-if v-xxx 这种的
 var dynamicArgAttribute = /^\s*((?:v-[\w-]+:|@|:|#)\[[^=]+\][^\s"'<>\/=]*)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/;
 
 
-var endTag = /^<\/[a-zA-Z][\-\.a-zA-Z0-9]*>/
+var endTag = /^<\/([a-zA-Z][\-\.a-zA-Z0-9]*)>/
 
 /*解析v-for的值
 根据官方文档，这里有好几种写法：
@@ -64,6 +64,11 @@ var forIteratorRE = /,([^,\}\]]*)(?:,([^,\}\]]*))?$/
 //解析纯文本 {{xxxx}}这样的
 var defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g
 
+
+//
+var bindRE = /^:|^\.|^v-bind:/
+var dirRE = /^v-|^@|^:|^#/
+
 export {
     startTagOpen,
     startTagClose,
@@ -75,5 +80,8 @@ export {
     stripParensRE,
     forIteratorRE,
 
-    defaultTagRE
+    defaultTagRE,
+
+    bindRE,
+    dirRE
 }
