@@ -7,9 +7,9 @@
 </head>
 <body>
 
-    <div id='app'>
+    <div id='app' style="color:red;font-size: 15px;">
         msg is {{message}}, age is {{age}} hahah
-        <p  name='ppp' v-if='aaa'  v-for='(item, name, index) in list'>
+        <p  key='index' name='ppp' v-if='aaa'  v-for='(item, name, index) in list'>
             text ..
         </p>
     </div>

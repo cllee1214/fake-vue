@@ -1,7 +1,6 @@
 import getAttr from './getAttr'
 import {bindRE, dirRE, dynamicArgAttribute} from '../../../asset/reg'
 
-
 function processElement (element) {
 
     //处理属性key
@@ -9,7 +8,10 @@ function processElement (element) {
     
     //是否是原生元素，也就是不带任何vue相关的属性
     element.plain = !element.key
-    
+
+    //处理style,包含静态的style和动态绑定的style
+    processStyle(element)
+
     //处理剩下的属性
     processAttr(element)
 
@@ -19,6 +21,22 @@ function processElement (element) {
 function processKey (element) {
     var expression = getAttr(element, 'key')
     element.key = expression
+}
+
+function processStyle (element) {
+    var staticStyle = getAttr(element, 'style')
+    if(staticStyle){
+        var rs = {}
+        staticStyle.split(';').forEach(function(item){
+            if(item){
+                var tmp = item.split(':')
+                if(tmp.length){
+                    rs[tmp[0].trim()] = tmp[1].trim()
+                }
+            }
+        })
+        element.staticStyle = JSON.stringify(rs)
+    }
 }
 
 //

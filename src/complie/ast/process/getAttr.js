@@ -10,6 +10,7 @@ function getAttr(element, name) {
             }
         }
     }
+    return value
 }
 
 export default getAttr
