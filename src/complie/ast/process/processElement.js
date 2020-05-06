@@ -1,4 +1,5 @@
 import getAttr from './getAttr'
+import getBindingAttr from './getBindingAttr'
 import {bindRE, dirRE, dynamicArgAttribute} from '../../../asset/reg'
 
 function processElement (element) {
@@ -11,6 +12,8 @@ function processElement (element) {
 
     //处理style,包含静态的style和动态绑定的style
     processStyle(element)
+
+    processClass(element)
 
     //处理剩下的属性
     processAttr(element)
@@ -37,9 +40,24 @@ function processStyle (element) {
         })
         element.staticStyle = JSON.stringify(rs)
     }
+    var bindingStyle = getBindingAttr(element, 'style')
+    if(bindingStyle){
+        element.bindingStyle = bindingStyle
+    }
 }
 
-//
+function processClass (element) {
+    var staticClass = getAttr(element, 'class')
+    if(staticClass){
+        element.staticClass = JSON.stringify(staticClass)
+    }
+    var bindingClass = getBindingAttr(element, 'class')
+    if(bindingClass){
+        element.bindingClass = bindingClass
+    }
+}
+
+
 function processAttr (element) {
     console.log(element)
     var attrList = element.attrList
@@ -56,6 +74,9 @@ function processAttr (element) {
         }
     }
 }
+
+
+
 
 //dynamic为true则在ast上条件动态的属性， false添加静态的属性
 function addAttr(element, name, value, range, dynamic) {
