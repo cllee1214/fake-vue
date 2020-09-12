@@ -11,12 +11,17 @@ var vm = new Vue({
       console.log(this)
     }
   },
+  computed: {
+    c1: function() {
+      return this.message + ' c1'
+    }
+  },
   beforeCreate () {
       console.log('beforecreate!')
   }
 });
 
-
+window.vm = vm
 console.log(vm)
 vm.message ='dfdfdf'
 vm.say()

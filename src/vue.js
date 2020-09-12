@@ -1,16 +1,20 @@
 
 import  init from './init/index.js'
+import mount from './mount/index.js'
 
 function Vue (options) {
-    this._init(options)
+    this._watchers = []
+    this.init(options)
+    this.mount(options.el)
 }
 
 
-function initMixin(Vue) {
-    Vue.prototype._init = init
+
+Vue.prototype = {
+    init,
+    mount
 }
 
-initMixin(Vue)
 
 
 export default Vue

@@ -1,5 +1,6 @@
 import initData from './initData'
 import initMethods from './initMethods'
+import initComputed from './initComputed'
 
 function init (options) {
     var vm = this
@@ -7,6 +8,10 @@ function init (options) {
 
     initData(vm)
     initMethods(vm)
+
+    if(options.computed){
+        initComputed(vm, options.computed)
+    }
 }
 
 
