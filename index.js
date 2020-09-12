@@ -3,7 +3,8 @@ import Vue from './src/vue.js';
 var vm = new Vue({
   el: '#app',
   data: {
-    message: 'Hello Vue!'
+    message: 'Hello Vue!',
+    age: 5
   },
   methods: {
     say: function() {

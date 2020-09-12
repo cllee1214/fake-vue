@@ -6,6 +6,12 @@
     <title>fake vue</title>
 </head>
 <body>
-    
+
+    <div id='app' style="color:red;font-size: 15px;">
+        msg is {{message}}, age is {{age}} hahah
+        <p v-bind:class='{active: isActive}'  key='index' name='ppp' v-if='aaa'  v-for='(item, name, index) in list'>
+            text ..
+        </p>
+    </div>
 </body>
 </html>
