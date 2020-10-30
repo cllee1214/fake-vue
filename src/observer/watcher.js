@@ -4,6 +4,7 @@ import Dep from "./dep"
  * 有几个地方都会实例化Watcher:
  * 
  *    1.初始化计算属性的时候,expOrFn计算属性对应的函数，cb为noop空函数，options.lazy = true
+ *      
  *     要用的时候才会去计算最终的值，关键一步：
  *     this.value = this.lazy ? undefined : this.get()
  *      
